@@ -1,0 +1,10 @@
+(a)
+Dacă frecvența de eșantionare este de 2000Hz atunci eșantioanele se vor afla la distanță de 
+T = 1/fv = 1/2000 = 0.0005 s = 0.5 ms
+
+(b)
+Numărul total de eșantioane într-o oră va fi numărul de eșantioane dintr-o secundă înmulțit cu numărul de secunde dintr-o oră.
+	N = 2000 * 3600 = 72 * 10^5 eșantioane
+Dacă fiecare eșantion are 4 biți, atunci memoria ocupată de cele N eșantioane va fi:
+	72 * 10^5 * 4 = 288 * 10^5 biți = 288/8 * 10^5 bytes = 36 * 10^5 bytes
+
