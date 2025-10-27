@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import numpy as np
+import scipy.io.wavfile
+
 
 def save_image(filename):
   
@@ -48,12 +50,16 @@ def Ex2():
     fig1, axs = plt.subplots(4)
     fig1.suptitle('Exercitiul 2')
     
+    
     #semnal sinusoidal fv= 400Hz, 1600 esantioane
     samples = int(1/0.0001)
     x = [i*0.0001 for i in range(samples)]
     y = [np.sin(800 * np.pi * t) for t in x]
     axs[0].set_xlim([0, 0.01])
     axs[0].plot(x, y)
+    
+    rate = int(10e5) 
+    scipy.io.wavfile.write('nume.wav', rate, np.array(y))
     
     samples = 1600
     xEsantionat = [i/1600 for i in range(samples)]
