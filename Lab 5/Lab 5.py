@@ -31,6 +31,7 @@ fig, axs = plt.subplots()
 plt.ticklabel_format(axis='x', style='sci', scilimits=(0,0))
 axs.set(xlabel = 'Frecvențe')
 axs.plot(f[:len(f)//3], X[:len(f)//3])
+plt.savefig("FFT - bullet train.pdf", format="pdf")
 
     
 # (f)
@@ -52,3 +53,4 @@ nrMasini = np.array([df["Count"][i] for i in esantioane])
 fig, axs = plt.subplots()
 axs.set(xlabel = 'Esantioane', ylabel = 'Numar masini')
 axs.plot(esantioane, nrMasini)
+plt.savefig("Traficul dintr-o luna.pdf", format = "pdf")
