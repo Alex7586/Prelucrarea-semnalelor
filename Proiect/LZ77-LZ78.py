@@ -1,7 +1,8 @@
-MAX_MATCH = 258
-MIN_MATCH = 3
+import ast
 
-def findMatch(s: bytes, t: bytes):
+def findMatch(s, t):
+    MIN_MATCH = 3
+
     if len(t) < MIN_MATCH:
         return (0,0,t[0] if t is not None else None)
     
@@ -26,27 +27,36 @@ def findMatch(s: bytes, t: bytes):
     return (d, best_len, c)
 
 def LZ77_encode(file):
-    windowLength = 32768
+    windowLength = 4096
     search_buffer = int(29/32 * windowLength)
     look_ahead_buffer = windowLength - search_buffer
     output = []
-    f = open(file, "rb")
-    window = bytearray()
+    f = open(file)
+    window = ''
     input = f.read(look_ahead_buffer)
     while input:
         d, l, c = findMatch(window, input)
         output.append((d,l,c))
         
         consume = l + 1 if c is not None else l
-        window.extend(input[:consume])
+        window += input[:consume]
         if len(window) > search_buffer:
-            del window[:-search_buffer]
+            window = window[-search_buffer:]
         input = input[consume:] + f.read(consume)
 
     f.close()
     return output
 
-def LZ77_decode(code):
+def LZ77_decode(file):
+    f = open(file)
+    code = f.read() \
+            .replace('(', '') \
+            .replace(')', '') \
+            .split(';') 
+    f.close()
+    code = [(int(tuple[0]),
+             int(tuple[1]),
+             ast.literal_eval(tuple[2])) for tup in code if (tuple := tup.split(', '))]
     result = ''
     for (d,l,c) in code:
         if d != 0:
@@ -94,13 +104,17 @@ def LZ78_decode(code):
 
 
 s = "ABRACADABRARABARABARA"
-# code = LZ77_encode('', s)
-# print(LZ77_decode(code))
 # code = LZ78_encode(s)
 # print(LZ78_decode(code))
-file = 'Bonuri.xlsx'
-fileOut = open('COMPRESSED_EXCEL_32KB.txt', 'w')
-output = LZ77_encode(file)
-print("Done compressing!")
-fileOut.write(";".join([str(i) for i in output]))
+
+# file = 'compress.txt'
+# fileOut = open('COMPRESSED_2MB_4KB.txt', 'w')
+# output = LZ77_encode(file)
+# print("Done compressing!")
+# fileOut.write(";".join([str(tup) for tup in output]))
+# fileOut.close()
+
+file = 'COMPRESSED_2MB_4KB.txt'
+fileOut = open('decompress.txt', 'w')
+fileOut.write(LZ77_decode(file))
 fileOut.close()
